@@ -9,7 +9,7 @@ AR := ar
 LIB_INC_DIRS := $(shell find lib -maxdepth 2 -type d -name include 2>/dev/null)
 LIB_INCLUDES := $(patsubst %,-I%,$(LIB_INC_DIRS))
 
-CFLAGS := -c -O2 -std=c11 $(LIB_INCLUDES)
+CFLAGS := -c -O2 -std=c11 $(LIB_INCLUDES) -fPIC -Iinclude
 ASFLAGS := -c
 LDFLAGS :=
 
@@ -87,4 +87,4 @@ $(foreach t,$(LIB_TOPS),$(eval $(call LINK_LIB,$t)))
 libs: $(USER_LIBS)
 
 clean:
-	find . -name '*.[s]o' -delete
+	find . -name '*.[so]' -delete
