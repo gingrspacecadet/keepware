@@ -3,18 +3,19 @@
 
 typedef struct nand {
     bool input_a, input_b;
-    bool prev_out;
-    struct nand *out_chip;
-    bool *out_chip_in;
+    struct nand **out_chip;
+    bool **out_chip_in;
+    int num_outputs;
 } nand;
 
 void simulate(nand *nand) {
     bool res = !(nand->input_a & nand->input_b);
-    nand->prev_out = res;
-    if (nand->out_chip_in && res != *nand->out_chip_in) *nand->out_chip_in = res;
+    for (int i = 0; i < nand->num_outputs; i++) {
+        if (nand->out_chip_in[i] && res != *nand->out_chip_in[i]) *nand->out_chip_in[i] = res;
+        if (nand->out_chip[i]) simulate(nand->out_chip[i]);
+    }
+    
     printf("NAND SIMULATED: %d and %d is %d\n", nand->input_a, nand->input_b, res);
-
-    if (nand->out_chip) simulate(nand->out_chip);
 }
 
 int main(void) {
@@ -23,13 +24,15 @@ int main(void) {
         // above chip computes B
         .out_chip = NULL,
         .out_chip_in = NULL,
+        .num_outputs = 0,
     };
 
     nand a = {
         .input_a = true,
         .input_b = true,
-        .out_chip = &b,
-        .out_chip_in = &b.input_b
+        .out_chip = (nand *[]){ &b },
+        .out_chip_in = (bool *[]){ &b.input_b },
+        .num_outputs = 1,
     };
 
     simulate(&a);
