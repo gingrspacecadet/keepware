@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+set -e
+
 if [[ -z "$1" ]]; then
     echo "Missing target to run"
     exit
@@ -12,5 +14,4 @@ if [[ ! -e "build/$1" ]]; then
     exit
 fi
 
-export LD_LIBRARY_PATH=$PWD/build
-./build/$1
+LD_LIBRARY_PATH=$PWD/build ./build/$1
