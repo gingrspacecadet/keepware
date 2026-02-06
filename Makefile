@@ -88,3 +88,4 @@ libs: $(USER_LIBS)
 
 clean:
 	find . -name '*.[so]' -delete
+	rm -rf build
