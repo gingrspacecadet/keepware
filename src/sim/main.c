@@ -4,16 +4,19 @@
 #include <stdbool.h>
 
 typedef struct nand {
-    bool i_a, i_b, o_a;
+    bool *in_a, *in_b;
+    bool out;
 } nand_t;
 
 int main(void) {
+    bool in_a = false;
+    bool in_b = false;
     nand_t nand = {
-        .i_a = false,
-        .i_b = false,
+        .in_a = &in_a,
+        .in_b = &in_b,
     };
-    printf("Simulating nand with inputs %d and %d...\n", nand.i_a, nand.i_b);
-    nand.o_a = !(nand.i_a & nand.i_b);
-    printf("Result: %d\n", nand.o_a);
+    printf("Simulating nand with %d and %d\n", *nand.in_a, *nand.in_b);
+    nand.out = !(*nand.in_a & *nand.in_b);
+    printf("Result: %d\n", nand.out);
     return 0;
 }
