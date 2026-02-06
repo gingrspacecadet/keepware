@@ -2,16 +2,4 @@
 
 set -e
 
-if [[ -z "$1" ]]; then
-    echo "Missing target to run"
-    exit
-fi
-
-make all > /dev/null
-
-if [[ ! -e "build/$1" ]]; then
-    echo "Target does not exist"
-    exit
-fi
-
 LD_LIBRARY_PATH=$PWD/build ./build/$1

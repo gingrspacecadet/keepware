@@ -1,0 +1,19 @@
+#!/usr/bin/env bash
+set -e
+
+make -B > /dev/null
+
+LD_LIBRARY_PATH="$PWD/build"
+
+cmds=()
+args=()
+
+for arg in "$@"; do
+    if [[ "$arg" == -* ]]; then
+        args+=("$arg")
+    else
+        cmds+=("./build/$arg")
+    fi
+done
+
+hyperfine "${cmds[@]}" "${args[@]}"
